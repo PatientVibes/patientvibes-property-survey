@@ -1,0 +1,20 @@
+# Cloudflare Pages Redirects and Rules
+
+# Main property survey redirects
+/property/* /index.html 200
+/map /index.html 200
+/survey /index.html 200
+
+# Report access
+/reports /index.html#reports 200
+/export /index.html#export 200
+
+# API endpoints (if needed later)
+/api/* /functions/:splat 200
+
+# Redirect old URLs
+/property_7309_main.kml /assets/property_7309_main.kml 301
+/property_web_map.geojson /assets/property_web_map.geojson 301
+
+# Force HTTPS
+http://property.patientvibes.io/* https://property.patientvibes.io/:splat 301

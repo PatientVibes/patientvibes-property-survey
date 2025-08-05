@@ -13,6 +13,9 @@
     <!-- Google Maps API -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry&callback=initGoogleMap"></script>
     
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "your-analytics-token"}'></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -572,11 +575,11 @@
         };
 
         const layerData = {
-            'flood-zones': 'assets/flood_zones_wgs84.geojson',
+            'flood-zones': '/r2/flood_zones_wgs84.geojson',
             'zoning': 'assets/zoning_wgs84.geojson',
             'council-districts': 'assets/council_districts_wgs84.geojson',
-            'contours': 'assets/contours_wgs84.geojson',
-            'impervious': 'assets/impervious_wgs84.geojson',
+            'contours': '/r2/contours_wgs84.geojson',
+            'impervious': '/r2/impervious_wgs84.geojson',
             'streets': 'assets/streets_wgs84.geojson'
         };
 
@@ -701,11 +704,13 @@
                         if (cityLayers[layerId] && !map.hasLayer(cityLayers[layerId])) {
                             map.addLayer(cityLayers[layerId]);
                             activeLayers.add(layerId);
+                            trackEvent('layer-enabled', { layer: layerId });
                         }
                     } else {
                         if (cityLayers[layerId] && map.hasLayer(cityLayers[layerId])) {
                             map.removeLayer(cityLayers[layerId]);
                             activeLayers.delete(layerId);
+                            trackEvent('layer-disabled', { layer: layerId });
                         }
                     }
                     updateLegend();
@@ -784,10 +789,22 @@
             `);
         }
 
+        // Analytics tracking
+        function trackEvent(event, properties = {}) {
+            fetch('/api/analytics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ event, properties })
+            }).catch(console.warn);
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initLeafletMap, 500);
             updateLegend();
+            
+            // Track page load
+            trackEvent('pageview', { page: 'property-survey-home' });
         });
 
         // Smooth scrolling for navigation

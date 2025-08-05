@@ -1,0 +1,20 @@
+name = "property-survey-pages"
+compatibility_date = "2025-08-05"
+
+# Pages configuration
+pages_build_output_dir = "."
+
+# R2 Bucket binding
+[[r2_buckets]]
+binding = "PROPERTY_ASSETS"
+bucket_name = "property-survey-assets"
+
+# KV for analytics (if needed later)
+# [[kv_namespaces]]
+# binding = "ANALYTICS"
+# id = "your-kv-namespace-id"
+
+[vars]
+SITE_NAME = "PatientVibes Property Survey"
+VERSION = "2.0.0"
+ENABLE_ANALYTICS = "true"
