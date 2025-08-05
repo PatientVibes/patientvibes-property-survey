@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "official_parcel",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "PARCELTYPE": 1, "STATUS": 2, "KIVAPIN": "112860", "APN": "JA47530190400000000", "PLATNAME": null, "LOT": null, "BLOCK": null, "TRACT": null, "OWN_NAME": "Moore Christopher & Gina", "OWN_NAME2": null, "OWN_ADDR": "7309 Main St", "OWN_ADDR2": null, "OWN_CITY": "Kansas City", "OWN_STATE": "MO", "OWN_ZIP": "64114", "OWN_COUNTR": null, "ADDRESS": "7309 Main St", "ADDR": 7309, "FRACTION": null, "PREFIX": null, "STREET": "Main", "STREET_TYP": "St", "SUITE": null, "POSTDIR": null, "LANDUSECOD": 1111, "BASE_PIN": null, "ASSESSED_L": 10340.0, "ASSESSED_I": 33641.0, "EXEMPT_LAN": 0.0, "EXEMPT_IMP": 0.0, "ASSESSMENT": "2023-12-04", "LEGAL": "WALDO PARK S 46 FT OF E 133.5 FT OF W 158.5 FT OF N 1/2 OF  LOT 21 AND TH E 1/2 OF VAC ALY LY W AND ADJ SD LT", "BLVDFRONTF": null, "LASTUPDATE": null, "ADDEDDATE": null, "SHAPE_Leng": 357.98080395590773, "SHAPE_Area": 6106.0209491097594 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -94.589292833752353, 38.995318500081943 ], [ -94.589290973655579, 38.995354928782405 ], [ -94.589286454040547, 38.995444374444531 ], [ -94.588818521562615, 38.995424688310571 ], [ -94.588825199202347, 38.995301925003083 ], [ -94.58882537202993, 38.995298859376632 ], [ -94.589292833752353, 38.995318500081943 ] ] ] } }
+]
+}

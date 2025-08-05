@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="official_parcel" id="official_parcel">
+	<SimpleField name="PARCELTYPE" type="int"></SimpleField>
+	<SimpleField name="STATUS" type="int"></SimpleField>
+	<SimpleField name="KIVAPIN" type="string"></SimpleField>
+	<SimpleField name="APN" type="string"></SimpleField>
+	<SimpleField name="PLATNAME" type="string"></SimpleField>
+	<SimpleField name="LOT" type="string"></SimpleField>
+	<SimpleField name="BLOCK" type="string"></SimpleField>
+	<SimpleField name="TRACT" type="string"></SimpleField>
+	<SimpleField name="OWN_NAME" type="string"></SimpleField>
+	<SimpleField name="OWN_NAME2" type="string"></SimpleField>
+	<SimpleField name="OWN_ADDR" type="string"></SimpleField>
+	<SimpleField name="OWN_ADDR2" type="string"></SimpleField>
+	<SimpleField name="OWN_CITY" type="string"></SimpleField>
+	<SimpleField name="OWN_STATE" type="string"></SimpleField>
+	<SimpleField name="OWN_ZIP" type="string"></SimpleField>
+	<SimpleField name="OWN_COUNTR" type="string"></SimpleField>
+	<SimpleField name="ADDRESS" type="string"></SimpleField>
+	<SimpleField name="ADDR" type="int"></SimpleField>
+	<SimpleField name="FRACTION" type="string"></SimpleField>
+	<SimpleField name="PREFIX" type="string"></SimpleField>
+	<SimpleField name="STREET" type="string"></SimpleField>
+	<SimpleField name="STREET_TYP" type="string"></SimpleField>
+	<SimpleField name="SUITE" type="string"></SimpleField>
+	<SimpleField name="POSTDIR" type="string"></SimpleField>
+	<SimpleField name="LANDUSECOD" type="int"></SimpleField>
+	<SimpleField name="BASE_PIN" type="string"></SimpleField>
+	<SimpleField name="ASSESSED_L" type="float"></SimpleField>
+	<SimpleField name="ASSESSED_I" type="float"></SimpleField>
+	<SimpleField name="EXEMPT_LAN" type="float"></SimpleField>
+	<SimpleField name="EXEMPT_IMP" type="float"></SimpleField>
+	<SimpleField name="ASSESSMENT" type="string"></SimpleField>
+	<SimpleField name="LEGAL" type="string"></SimpleField>
+	<SimpleField name="BLVDFRONTF" type="float"></SimpleField>
+	<SimpleField name="LASTUPDATE" type="string"></SimpleField>
+	<SimpleField name="ADDEDDATE" type="string"></SimpleField>
+	<SimpleField name="SHAPE_Leng" type="float"></SimpleField>
+	<SimpleField name="SHAPE_Area" type="float"></SimpleField>
+</Schema>
+<Folder><name>official_parcel</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#official_parcel">
+		<SimpleData name="PARCELTYPE">1</SimpleData>
+		<SimpleData name="STATUS">2</SimpleData>
+		<SimpleData name="KIVAPIN">112860</SimpleData>
+		<SimpleData name="APN">JA47530190400000000</SimpleData>
+		<SimpleData name="OWN_NAME">Moore Christopher &amp; Gina</SimpleData>
+		<SimpleData name="OWN_ADDR">7309 Main St</SimpleData>
+		<SimpleData name="OWN_CITY">Kansas City</SimpleData>
+		<SimpleData name="OWN_STATE">MO</SimpleData>
+		<SimpleData name="OWN_ZIP">64114</SimpleData>
+		<SimpleData name="ADDRESS">7309 Main St</SimpleData>
+		<SimpleData name="ADDR">7309</SimpleData>
+		<SimpleData name="STREET">Main</SimpleData>
+		<SimpleData name="STREET_TYP">St</SimpleData>
+		<SimpleData name="LANDUSECOD">1111</SimpleData>
+		<SimpleData name="ASSESSED_L">10340.000000000000000</SimpleData>
+		<SimpleData name="ASSESSED_I">33641.000000000000000</SimpleData>
+		<SimpleData name="EXEMPT_LAN">0.000000000000000</SimpleData>
+		<SimpleData name="EXEMPT_IMP">0.000000000000000</SimpleData>
+		<SimpleData name="ASSESSMENT">2023/12/04</SimpleData>
+		<SimpleData name="LEGAL">WALDO PARK S 46 FT OF E 133.5 FT OF W 158.5 FT OF N 1/2 OF  LOT 21 AND TH E 1/2 OF VAC ALY LY W AND ADJ SD LT</SimpleData>
+		<SimpleData name="SHAPE_Leng">357.980803955907732</SimpleData>
+		<SimpleData name="SHAPE_Area">6106.020949109759385</SimpleData>
+	</SchemaData></ExtendedData>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>-94.5892928337524,38.9953185000819 -94.5892909736556,38.9953549287824 -94.5892864540405,38.9954443744445 -94.5888185215626,38.9954246883106 -94.5888251992023,38.9953019250031 -94.5888253720299,38.9952988593766 -94.5892928337524,38.9953185000819</coordinates></LinearRing></outerBoundaryIs></Polygon>
+  </Placemark>
+</Folder>
+</Document></kml>
