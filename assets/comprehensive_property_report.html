@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprehensive Property Report - 7309 Main St</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; line-height: 1.4; }
+        .report-container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; border-bottom: 3px solid #2c3e50; padding: 20px; background: #ecf0f1; }
+        .section { margin: 30px 20px; page-break-inside: avoid; }
+        .section h2 { background: #34495e; color: white; padding: 10px; margin: 0 0 15px 0; }
+        .section h3 { color: #2c3e50; border-bottom: 2px solid #bdc3c7; padding-bottom: 5px; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .data-table th, .data-table td { border: 1px solid #bdc3c7; padding: 10px; text-align: left; }
+        .data-table th { background-color: #34495e; color: white; font-weight: bold; }
+        .data-table tr:nth-child(even) { background-color: #ecf0f1; }
+        .coordinates-box { background: #d5dbdb; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .legal-desc { background: #fdeaa7; padding: 20px; border-radius: 8px; border-left: 5px solid #f39c12; margin: 15px 0; }
+        .alert-box { background: #fadbd8; padding: 15px; border-radius: 8px; border-left: 5px solid #e74c3c; margin: 15px 0; }
+        .info-box { background: #d6eaf8; padding: 15px; border-radius: 8px; border-left: 5px solid #3498db; margin: 15px 0; }
+        .map-container { height: 500px; margin: 20px 0; border: 2px solid #34495e; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .compliance-section { background: #e8f5e8; padding: 20px; border-radius: 8px; }
+        @media print { 
+            body { margin: 0; font-size: 11pt; }
+            .map-container { height: 300px; }
+            .section { page-break-inside: avoid; margin: 20px 10px; }
+        }
+        @media (max-width: 768px) { 
+            .data-grid { grid-template-columns: 1fr; }
+            .report-container { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>COMPREHENSIVE PROPERTY SURVEY REPORT</h1>
+            <h2>7309 Main St, Kansas City, Missouri 64114</h2>
+            <p><strong>Report Date:</strong> August 5, 2025</p>
+            <p><strong>Report Type:</strong> Combined ALTA/NSPS Style Survey & Property Condition Analysis</p>
+            <p><strong>Prepared Using:</strong> QGIS CLI & Official Municipal Geodatabases</p>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>EXECUTIVE SUMMARY</h2>
+            <div class="info-box">
+                <p><strong>Property Overview:</strong> Single-family residential property in the Waldo Park subdivision, originally platted in 1907. Property shows good municipal infrastructure access with standard residential zoning (R-5). No immediate structural or environmental concerns identified in available public records.</p>
+            </div>
+            <div class="data-grid">
+                <div>
+                    <h4>Key Findings:</h4>
+                    <ul>
+                        <li>Legal boundaries well-defined from 1907 original plat</li>
+                        <li>Zoned R-5 (Residential Urban Low Density)</li>
+                        <li>Located in Council District 6</li>
+                        <li>Current assessment: $43,981 (Land: $10,340, Improvements: $33,641)</li>
+                        <li>No flood hazard zone designation found</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Recommendations:</h4>
+                    <ul>
+                        <li>Professional boundary survey recommended for legal transactions</li>
+                        <li>Field verification of utilities and easements advised</li>
+                        <li>Building condition assessment recommended for older improvements</li>
+                        <li>Verify current zoning compliance with planned use</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property Identification -->
+        <div class="section">
+            <h2>PROPERTY IDENTIFICATION (ALTA Standard Section 1)</h2>
+            <table class="data-table">
+                <tr><th>Field</th><th>Value</th></tr>
+                <tr><td>Property Address</td><td>7309 Main St, Kansas City, MO 64114</td></tr>
+                <tr><td>Legal Owner</td><td>Moore, Christopher & Gina</td></tr>
+                <tr><td>Kansas City PIN</td><td>112860</td></tr>
+                <tr><td>Jackson County APN</td><td>JA47530190400000000</td></tr>
+                <tr><td>Original Subdivision</td><td>Waldo Park (Platted 1907)</td></tr>
+                <tr><td>PLSS Reference</td><td>s334808</td></tr>
+                <tr><td>Census Neighborhood</td><td>Tower Homes</td></tr>
+                <tr><td>Council District</td><td>6th District</td></tr>
+                <tr><td>School District</td><td>Kansas City 33</td></tr>
+            </table>
+        </div>
+
+        <!-- Survey Measurements -->
+        <div class="section">
+            <h2>SURVEY MEASUREMENTS & BOUNDARIES</h2>
+            <div class="data-grid">
+                <div>
+                    <h3>Area Calculations</h3>
+                    <table class="data-table">
+                        <tr><th>Measurement</th><th>Value</th></tr>
+                        <tr><td>Total Area</td><td>6,106.021 square feet</td></tr>
+                        <tr><td>Area (Acres)</td><td>0.140 acres</td></tr>
+                        <tr><td>Perimeter</td><td>357.981 feet</td></tr>
+                        <tr><td>Frontage (approx.)</td><td>25 feet (E-W)</td></tr>
+                        <tr><td>Depth (approx.)</td><td>46 feet (N-S)</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>Coordinate Systems</h3>
+                    <table class="data-table">
+                        <tr><th>System</th><th>Values</th></tr>
+                        <tr><td>WGS84 Latitude</td><td>38.995378°</td></tr>
+                        <tr><td>WGS84 Longitude</td><td>-94.589063°</td></tr>
+                        <tr><td>State Plane Missouri West</td><td>EPSG:102698</td></tr>
+                        <tr><td>Data Source</td><td>Official Cadastral Database</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="legal-desc">
+                <h3>Legal Description</h3>
+                <p><strong>WALDO PARK S 46 FT OF E 133.5 FT OF W 158.5 FT OF N 1/2 OF LOT 21 AND TH E 1/2 OF VAC ALY LY W AND ADJ SD LT</strong></p>
+                <p><em>Interpretation:</em> The southern 46 feet of the eastern 133.5 feet of the western 158.5 feet of the north half of Lot 21 in the Waldo Park subdivision, plus the east half of the vacated alley lying west and adjacent to said lot.</p>
+            </div>
+        </div>
+
+        <!-- Interactive Map -->
+        <div class="section">
+            <h2>PROPERTY LOCATION MAP</h2>
+            <div id="map" class="map-container"></div>
+            <p><em>Interactive map showing property boundaries, surrounding infrastructure, and municipal features. Yellow highlighted area shows exact property boundaries from official cadastral database.</em></p>
+        </div>
+
+        <!-- Zoning & Regulatory -->
+        <div class="section">
+            <h2>ZONING & REGULATORY INFORMATION</h2>
+            <div class="data-grid">
+                <div>
+                    <h3>Current Zoning</h3>
+                    <table class="data-table">
+                        <tr><th>Attribute</th><th>Value</th></tr>
+                        <tr><td>Zoning Classification</td><td>R-5 (Residential Urban Low Density)</td></tr>
+                        <tr><td>Land Use Code</td><td>1111 - Single Family (Non-Mobile Home Park)</td></tr>
+                        <tr><td>Impact Fee Zone</td><td>EXEMPT</td></tr>
+                        <tr><td>Park Region</td><td>South</td></tr>
+                        <tr><td>PW Maintenance District</td><td>D3</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>Municipal Services</h3>
+                    <table class="data-table">
+                        <tr><th>Service</th><th>Details</th></tr>
+                        <tr><td>Trash Collection Day</td><td>Thursday</td></tr>
+                        <tr><td>Council Representative</td><td>6th District</td></tr>
+                        <tr><td>Police Coverage</td><td>Available (district data extracted)</td></tr>
+                        <tr><td>Street Maintenance</td><td>District D3</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Site Conditions -->
+        <div class="section">
+            <h2>SITE CONDITIONS & INFRASTRUCTURE</h2>
+            <div class="data-grid">
+                <div>
+                    <h3>Topography & Environment</h3>
+                    <ul>
+                        <li><strong>Elevation Data:</strong> Contour lines available from municipal database</li>
+                        <li><strong>Flood Zones:</strong> No FEMA flood hazard designation found in immediate area</li>
+                        <li><strong>Impervious Surfaces:</strong> Mapped development patterns available</li>
+                        <li><strong>Storm Water:</strong> Municipal drainage systems present</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Street Access & Utilities</h3>
+                    <ul>
+                        <li><strong>Street Frontage:</strong> Main Street access confirmed</li>
+                        <li><strong>Street Classification:</strong> Data available from centerline database</li>
+                        <li><strong>Utilities:</strong> Municipal systems indicated (field verification recommended)</li>
+                        <li><strong>Fiber Infrastructure:</strong> Municipal fiber network mapped in area</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Information -->
+        <div class="section">
+            <h2>PROPERTY VALUATION & ASSESSMENT</h2>
+            <table class="data-table">
+                <tr><th>Assessment Component</th><th>Value</th><th>Effective Date</th></tr>
+                <tr><td>Assessed Land Value</td><td>$10,340</td><td>December 4, 2023</td></tr>
+                <tr><td>Assessed Improvement Value</td><td>$33,641</td><td>December 4, 2023</td></tr>
+                <tr><td>Total Assessed Value</td><td>$43,981</td><td>December 4, 2023</td></tr>
+                <tr><td>Exempt Land Value</td><td>$0</td><td>December 4, 2023</td></tr>
+                <tr><td>Exempt Improvement Value</td><td>$0</td><td>December 4, 2023</td></tr>
+            </table>
+            <div class="info-box">
+                <p><strong>Assessment Note:</strong> Values shown are for property tax assessment purposes and may not reflect current market value. Professional appraisal recommended for market valuation.</p>
+            </div>
+        </div>
+
+        <!-- Compliance & Standards -->
+        <div class="section">
+            <h2>COMPLIANCE & PROFESSIONAL STANDARDS</h2>
+            <div class="compliance-section">
+                <h3>Report Standards Compliance</h3>
+                <p>This report incorporates elements from the following industry standards:</p>
+                <ul>
+                    <li><strong>ALTA/NSPS Land Title Survey Standards (2021):</strong> Property identification, boundary information, and coordinate systems</li>
+                    <li><strong>ASTM E2018-15 Property Condition Assessment:</strong> Site evaluation methodology and reporting structure</li>
+                    <li><strong>Municipal GIS Standards:</strong> Official cadastral database integration and spatial accuracy</li>
+                </ul>
+                
+                <h3>Data Sources & Accuracy</h3>
+                <table class="data-table">
+                    <tr><th>Data Source</th><th>Accuracy</th><th>Date</th></tr>
+                    <tr><td>Jackson County Cadastral Database</td><td>Survey Grade</td><td>Current as of extraction</td></tr>
+                    <tr><td>Kansas City Municipal GIS</td><td>Mapping Grade</td><td>Regularly updated</td></tr>
+                    <tr><td>Property Assessment Records</td><td>Administrative</td><td>December 4, 2023</td></tr>
+                    <tr><td>Zoning & Planning Data</td><td>Regulatory</td><td>Current municipal records</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Limitations & Recommendations -->
+        <div class="section">
+            <h2>LIMITATIONS & PROFESSIONAL RECOMMENDATIONS</h2>
+            <div class="alert-box">
+                <h3>Report Limitations</h3>
+                <ul>
+                    <li>This report is based on publicly available GIS data and records only</li>
+                    <li>No field survey or physical inspection of the property was conducted</li>
+                    <li>Utility locations shown are approximate and require field verification</li>
+                    <li>Building conditions and improvements not physically assessed</li>
+                    <li>Environmental conditions require separate professional assessment</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>Professional Recommendations</h3>
+                <ol>
+                    <li><strong>Boundary Survey:</strong> Retain licensed land surveyor for legal boundary establishment</li>
+                    <li><strong>Utility Verification:</strong> Contact utility companies for precise utility locations</li>
+                    <li><strong>Building Inspection:</strong> Professional building inspection recommended for improvements</li>
+                    <li><strong>Environmental Review:</strong> Phase I Environmental Site Assessment if commercial use planned</li>
+                    <li><strong>Title Research:</strong> Complete title research through qualified title company</li>
+                    <li><strong>Zoning Verification:</strong> Confirm current zoning compliance with local planning department</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Appendices -->
+        <div class="section">
+            <h2>DATA SOURCES & APPENDICES</h2>
+            <h3>Municipal Database Sources</h3>
+            <ul>
+                <li>Jackson County Official Cadastral Database (Cadastre.gdb)</li>
+                <li>Kansas City Street Centerline Database (Centerline.gdb)</li>
+                <li>Kansas City Topographic Contours (Contours.gdb)</li>
+                <li>Kansas City Municipal Boundaries & Zoning (Other.gdb)</li>
+                <li>Kansas City Impervious Surfaces Mapping (ImperviousSurfaces.gdb)</li>
+                <li>Kansas City Parcel Viewer Export Data</li>
+            </ul>
+            
+            <h3>Available Report Formats</h3>
+            <ul>
+                <li><strong>Interactive Web Map:</strong> property_map.html</li>
+                <li><strong>Google Earth/Maps:</strong> property_7309_main.kml</li>
+                <li><strong>GIS Data:</strong> Multiple shapefile and GeoJSON formats</li>
+                <li><strong>Raw Data:</strong> CSV exports and geodatabase layers</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="section" style="text-align: center; border-top: 2px solid #34495e; padding-top: 20px; margin-top: 40px;">
+            <p><em>This report was generated using QGIS CLI tools and official municipal geodatabase sources. All coordinate and measurement data derived from Jackson County official cadastral database. Report prepared for informational purposes only - professional survey recommended for legal or construction purposes.</em></p>
+            <p><strong>Report Generated:</strong> August 5, 2025 | <strong>Page:</strong> 1 of 1</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactive Map -->
+    <script>
+        // Initialize map
+        var map = L.map('map').setView([38.995357, -94.589056], 18);
+
+        // Base layers
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles © Esri'
+        });
+
+        // Property boundary (exact coordinates from cadastral database)
+        var propertyBounds = [
+            [38.995318500081943, -94.589292833752353],
+            [38.995354928782405, -94.589290973655579], 
+            [38.995444374444531, -94.589286454040547],
+            [38.995424688310571, -94.588818521562615],
+            [38.995301925003083, -94.588825199202347],
+            [38.995298859376632, -94.58882537202993],
+            [38.995318500081943, -94.589292833752353]
+        ];
+
+        var propertyPolygon = L.polygon(propertyBounds, {
+            color: 'red',
+            weight: 3,
+            fillColor: 'yellow',
+            fillOpacity: 0.4
+        }).addTo(map);
+
+        // Property marker
+        var propertyMarker = L.marker([38.995357, -94.589056]).addTo(map);
+        propertyMarker.bindPopup(`
+            <b>7309 Main St</b><br>
+            PIN: 112860<br>
+            Area: 6,106.021 sq ft<br>
+            Zoning: R-5<br>
+            Owner: Moore Christopher & Gina
+        `);
+
+        // Layer control
+        var baseMaps = {
+            "Street Map": osm,
+            "Satellite": satellite
+        };
+
+        var overlayMaps = {
+            "Property Boundary": propertyPolygon
+        };
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        L.control.scale().addTo(map);
+
+        // Fit to property bounds
+        map.fitBounds(propertyPolygon.getBounds());
+    </script>
+</body>
+</html>

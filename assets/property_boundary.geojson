@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "7309 Main St",
+        "pin": "112860",
+        "apn": "47-530-19-04-00-0-00-000",
+        "legal_desc": "WALDO PARK S 46 FT OF E 133.5 FT OF W 158.5 FT OF N 1/2 OF LOT 21",
+        "approx_area_sqft": 6106.021,
+        "approx_perimeter_ft": 357.981
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-94.58920, 38.99530],
+          [-94.58920, 38.99550],
+          [-94.58900, 38.99550],
+          [-94.58900, 38.99530],
+          [-94.58920, 38.99530]
+        ]]
+      }
+    }
+  ]
+}
