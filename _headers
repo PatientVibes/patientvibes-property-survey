@@ -6,10 +6,26 @@
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' unpkg.com cdn.jsdelivr.net maps.googleapis.com; style-src 'self' 'unsafe-inline' unpkg.com; img-src 'self' data: https:; connect-src 'self' https:; font-src 'self' data:;
+  Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net https://maps.googleapis.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https: blob:; connect-src 'self' https:; font-src 'self' data:;
 
-  # Performance Headers  
-  Cache-Control: public, max-age=31536000, immutable
+# Explicit content types for proper rendering
+/*.html
+  Content-Type: text/html; charset=utf-8
+
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/*.css
+  Content-Type: text/css; charset=utf-8
+
+/*.json
+  Content-Type: application/json; charset=utf-8
+
+/*.geojson
+  Content-Type: application/geo+json; charset=utf-8
+
+/*.kml
+  Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8
 
 # Cache GeoJSON files for 1 hour (they may update)
 /assets/*.geojson
@@ -18,6 +34,10 @@
 # Cache reports for 1 day
 /assets/*.html
   Cache-Control: public, max-age=86400
+
+# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
 
 # Cache main page for 10 minutes
 /

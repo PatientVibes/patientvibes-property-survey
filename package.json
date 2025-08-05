@@ -1,0 +1,26 @@
+{
+  "name": "patientvibes-property-survey",
+  "version": "1.0.0",
+  "description": "**Advanced GIS Property Analysis & Interactive City Data Platform**",
+  "main": "index.js",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatientVibes/patientvibes-property-survey.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatientVibes/patientvibes-property-survey/issues"
+  },
+  "homepage": "https://github.com/PatientVibes/patientvibes-property-survey#readme"
+}

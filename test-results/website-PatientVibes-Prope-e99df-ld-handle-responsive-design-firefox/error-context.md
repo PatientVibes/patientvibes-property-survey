@@ -1,0 +1,63 @@
+# Page snapshot
+
+```yaml
+- banner: PatientVibes.io
+- heading "🗺️ Advanced Property Survey & City Analysis" [level=1]
+- paragraph:
+  - strong: 7309 Main St, Kansas City, Missouri 64114
+- paragraph: Comprehensive GIS analysis with city layers, flood zones, zoning, and infrastructure mapping
+- text: ±3 Feet Survey Accuracy • Multi-Layer City Data • Professional Reports
+- button "Satellite"
+- button "Google Maps"
+- button "Terrain"
+- img
+- button "Zoom in" [disabled]
+- button "Zoom out"
+- link "Leaflet":
+  - /url: https://leafletjs.com
+- text: Tiles © Esri
+- strong: Active Layers
+- text: Property Boundary
+- heading "🗂️ City Data Layers" [level=3]
+- heading "Property Boundaries" [level=4]
+- checkbox "Property Boundary" [checked]
+- text: Property Boundary Survey-grade accuracy ±3ft
+- heading "Environmental" [level=4]
+- checkbox "Flood Zones"
+- text: Flood Zones
+- checkbox "Elevation Contours"
+- text: Elevation Contours
+- checkbox "Impervious Surfaces"
+- text: Impervious Surfaces
+- heading "Municipal" [level=4]
+- checkbox "Zoning Districts"
+- text: Zoning Districts
+- checkbox "Council Districts"
+- text: Council Districts
+- checkbox "Street Network"
+- text: Street Network
+- heading "📊 Property Details" [level=3]
+- text: "Address: 7309 Main St Owner: Moore, Christopher & Gina PIN: 112860 Area: 6,106.02 sq ft Zoning: R-5 Residential Council District: 6th District Assessment: $43,981 Precision: ±3 feet"
+- heading "📄 Detailed Reports" [level=3]
+- link "📋 Complete Comprehensive Report":
+  - /url: assets/complete_comprehensive_report.html
+- link "📐 Precision Boundary Analysis":
+  - /url: assets/precision_boundary_report.html
+- link "🏠 Property Assessment Report":
+  - /url: assets/comprehensive_property_report.html
+- link "🗺️ Interactive Precision Map":
+  - /url: assets/precision_boundary_map.html
+- heading "📥 Export Data" [level=3]
+- link "🌍 Google Earth KML":
+  - /url: assets/property_7309_main.kml
+- link "🚀 Open in Google Earth":
+  - /url: "#"
+- link "📊 GeoJSON":
+  - /url: assets/property_web_map.geojson
+- link "📄 PDF Report":
+  - /url: "#"
+- link "📋 All Reports":
+  - /url: "#"
+- link "📍 Open in Google Maps":
+  - /url: "#"
+```

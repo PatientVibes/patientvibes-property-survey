@@ -319,7 +319,7 @@
         .export-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             margin-top: 15px;
         }
         
@@ -376,8 +376,7 @@
         
         @media (max-width: 768px) {
             .hero h1 { font-size: 1.8em; }
-            .nav-links { gap: 15px; }
-            .nav-links a { font-size: 12px; }
+            .nav-links { display: none; }
             .map-container { height: 500px; }
             .sidebar {
                 grid-template-columns: 1fr;
@@ -410,7 +409,7 @@
         <div class="main-content">
             <section class="map-section" id="maps">
                 <div class="map-tabs">
-                    <button class="map-tab active" onclick="showMap('leaflet')">Satellite</button>
+                    <button class="map-tab active" onclick="showMap('satellite')">Satellite</button>
                     <button class="map-tab" onclick="showMap('google')">Google Maps</button>
                     <button class="map-tab" onclick="showMap('terrain')">Terrain</button>
                 </div>
@@ -525,10 +524,13 @@
                 <div class="export-section" id="export">
                     <h3>📥 Export Data</h3>
                     <div class="export-buttons">
-                        <a href="assets/property_7309_main.kml" class="export-btn kml" download>
-                            🌍 Google Earth
+                        <a href="assets/property_7309_main.kml" class="export-btn kml" download onclick="trackEvent('export', {type: 'kml'})">
+                            🌍 Google Earth KML
                         </a>
-                        <a href="assets/property_web_map.geojson" class="export-btn json" download>
+                        <a href="#" class="export-btn kml" onclick="openGoogleEarth()">
+                            🚀 Open in Google Earth
+                        </a>
+                        <a href="assets/property_web_map.geojson" class="export-btn json" download onclick="trackEvent('export', {type: 'geojson'})">
                             📊 GeoJSON
                         </a>
                         <a href="#" class="export-btn pdf" onclick="exportToPDF()">
@@ -536,6 +538,9 @@
                         </a>
                         <a href="#" class="export-btn report" onclick="openReports()">
                             📋 All Reports
+                        </a>
+                        <a href="#" class="export-btn report" onclick="openGoogleMaps()">
+                            📍 Open in Google Maps
                         </a>
                     </div>
                 </div>
@@ -583,22 +588,40 @@
             'streets': 'assets/streets_wgs84.geojson'
         };
 
-        // Initialize Leaflet Map
+        // Initialize Leaflet Map with error handling
         function initLeafletMap() {
-            map = L.map('leaflet-map').setView(propertyData.center, 18);
+            try {
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet library not loaded');
+                    return;
+                }
+                
+                map = L.map('leaflet-map').setView(propertyData.center, 18);
 
-            // Base layers
+            // Base layers with conservative zoom limits
             const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles © Esri',
-                maxZoom: 22
+                maxZoom: 19,  // Reduced from 22 to prevent missing tiles
+                minZoom: 1
             });
 
             const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap',
-                maxZoom: 17
+                maxZoom: 17,
+                minZoom: 1
+            });
+
+            // Fallback OpenStreetMap layer for high zoom levels
+            const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19,
+                minZoom: 1
             });
 
             satellite.addTo(map);
+            
+            // Set map zoom constraints
+            map.setMaxZoom(19);
 
             // Add property boundary
             addPropertyBoundary();
@@ -612,6 +635,13 @@
             // Fit map to property with some padding
             const bounds = L.latLngBounds(propertyData.bounds);
             map.fitBounds(bounds.pad(0.1));
+            
+            } catch (error) {
+                console.error('Error initializing map:', error);
+                // Show fallback message
+                const mapContainer = document.getElementById('leaflet-map');
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Map failed to load. Please refresh the page.</div>';
+            }
         }
 
         function addPropertyBoundary() {
@@ -713,7 +743,8 @@
                             trackEvent('layer-disabled', { layer: layerId });
                         }
                     }
-                    updateLegend();
+                    // Add small delay for better browser compatibility
+                    setTimeout(updateLegend, 100);
                 });
             });
         }
@@ -757,7 +788,15 @@
             document.querySelectorAll('.map-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
 
-            if (mapType === 'leaflet' || mapType === 'terrain') {
+            if (mapType === 'google') {
+                document.getElementById('leaflet-map').style.display = 'none';
+                document.getElementById('google-map').style.display = 'block';
+                
+                // Initialize Google Map if not already done
+                if (!googleMap) {
+                    setTimeout(initGoogleMap, 100);
+                }
+            } else {
                 document.getElementById('leaflet-map').style.display = 'block';
                 document.getElementById('google-map').style.display = 'none';
                 
@@ -789,6 +828,75 @@
             `);
         }
 
+        // Google Earth integration
+        function openGoogleEarth() {
+            const center = `${propertyData.center[0]},${propertyData.center[1]}`;
+            const earthWebUrl = `https://earth.google.com/web/search/${encodeURIComponent('7309 Main St, Kansas City, MO')}/@${center},200a,500d,35y,0h,45t,0r`;
+            window.open(earthWebUrl, '_blank');
+            trackEvent('export', { type: 'google-earth-web' });
+        }
+
+        // Google Maps integration with property overlay
+        function openGoogleMaps() {
+            const center = `${propertyData.center[0]},${propertyData.center[1]}`;
+            const googleMapsUrl = `https://www.google.com/maps/@${center},20z/data=!3m1!1e3`;
+            window.open(googleMapsUrl, '_blank');
+            trackEvent('export', { type: 'google-maps' });
+        }
+
+        // Google Maps initialization
+        function initGoogleMap() {
+            if (typeof google === 'undefined') {
+                console.warn('Google Maps API not loaded');
+                return;
+            }
+            
+            googleMap = new google.maps.Map(document.getElementById('google-map'), {
+                center: { lat: propertyData.center[0], lng: propertyData.center[1] },
+                zoom: 18,
+                mapTypeId: 'satellite'
+            });
+
+            // Add property boundary to Google Maps
+            const propertyPolygon = new google.maps.Polygon({
+                paths: propertyData.bounds.map(coord => ({ lat: coord[0], lng: coord[1] })),
+                strokeColor: '#ff4444',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                fillColor: '#ffff00',
+                fillOpacity: 0.4
+            });
+            
+            propertyPolygon.setMap(googleMap);
+
+            // Add property center marker
+            const centerMarker = new google.maps.Marker({
+                position: { lat: propertyData.center[0], lng: propertyData.center[1] },
+                map: googleMap,
+                title: '7309 Main St Property Center',
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#00aa00" stroke="#ffffff" stroke-width="3"/></svg>'),
+                    scaledSize: new google.maps.Size(32, 32)
+                }
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div>
+                        <h4>🏠 7309 Main St Property Center</h4>
+                        <p><strong>Area:</strong> 6,106.02 sq ft</p>
+                        <p><strong>Perimeter:</strong> 357.98 ft</p>
+                        <p><strong>Precision:</strong> ±3 feet</p>
+                        <p><strong>Confidence:</strong> 99%+</p>
+                    </div>
+                `
+            });
+
+            centerMarker.addListener('click', () => {
+                infoWindow.open(googleMap, centerMarker);
+            });
+        }
+
         // Analytics tracking
         function trackEvent(event, properties = {}) {
             fetch('/api/analytics', {
@@ -798,9 +906,17 @@
             }).catch(console.warn);
         }
 
-        // Initialize on page load
+        // Initialize on page load with better browser compatibility
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initLeafletMap, 500);
+            // Wait for all resources to load for better WebKit compatibility
+            if (document.readyState === 'complete') {
+                setTimeout(initLeafletMap, 300);
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(initLeafletMap, 300);
+                });
+            }
+            
             updateLegend();
             
             // Track page load
