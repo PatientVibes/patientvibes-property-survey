@@ -6,9 +6,15 @@ Professional property survey and analysis for **7309 Main St, Kansas City, Misso
 
 ## 🌐 Live Platform
 
-**🏠 Main Portfolio**: [https://patientvibes.io](https://patientvibes.io)  
-**🗺️ Property Platform**: [https://property.patientvibes.io](https://property.patientvibes.io)  
-**📊 Direct Demo**: [https://c335091e.property-survey.pages.dev](https://c335091e.property-survey.pages.dev)
+**🏠 Main Portfolio**: [https://patientvibes.io](https://patientvibes.io) ✅ Live  
+**🗺️ Property Platform**: [https://property.patientvibes.io](https://property.patientvibes.io) ✅ Live  
+**📊 Latest Deployment**: [https://4829e27e.property-survey.pages.dev](https://4829e27e.property-survey.pages.dev)
+
+### 🎉 Deployment Status
+- **Last Updated**: August 6, 2025
+- **Status**: ✅ Fully Operational
+- **Hosting**: Cloudflare Pages with custom domains
+- **Performance**: Sub-second global loading via Cloudflare CDN
 
 ## 🚀 Platform Architecture
 
@@ -268,6 +274,26 @@ npm test
 npm test -- --grep "Property Data"
 npm test -- --grep "Map Functionality"
 ```
+
+## 🔧 Troubleshooting
+
+### **Common Issues & Solutions**
+
+#### HTML Displaying as Plain Text
+**Problem**: Browser shows HTML source code instead of rendering the page  
+**Cause**: Conflicting Cloudflare Worker routes overriding Pages deployment  
+**Solution**:
+1. Check for Worker routes: `wrangler route list`
+2. Remove conflicting routes via Cloudflare dashboard or API
+3. Purge cache after fixing: Dashboard → Caching → Configuration → Purge Everything
+4. Ensure `_headers` file properly sets `Content-Type: text/html`
+
+#### Deployment Not Updating
+**Problem**: Changes not reflected after deployment  
+**Solution**: 
+1. Purge Cloudflare cache
+2. Check deployment URL directly (*.pages.dev)
+3. Verify custom domain DNS settings
 
 ## 📞 Professional Contact
 
