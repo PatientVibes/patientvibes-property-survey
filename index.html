@@ -424,6 +424,39 @@
             </section>
 
             <div class="sidebar">
+                <div class="fence-analysis" style="background: #fff3cd; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 2px solid #ffc107;">
+                    <h3>🏡 Fence Ownership Analysis</h3>
+                    <div style="font-size: 14px; margin-top: 10px;">
+                        <strong>Eastern Boundary Analysis:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><strong>Property Line:</strong> Red dashed line on map</li>
+                            <li><strong>Survey Accuracy:</strong> ±3 feet</li>
+                            <li><strong>Measurement Tool:</strong> Use right-click to measure</li>
+                        </ul>
+                        
+                        <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <strong>How to Determine Fence Ownership:</strong>
+                            <ol style="margin: 5px 0; padding-left: 20px; font-size: 13px;">
+                                <li>Zoom to level 20-22 on satellite view</li>
+                                <li>Look for the red dashed property line</li>
+                                <li>If fence is <strong>inside</strong> your property line = Your fence</li>
+                                <li>If fence is <strong>on</strong> the line = Shared (typically)</li>
+                                <li>If fence is <strong>outside</strong> your property = Neighbor's fence</li>
+                            </ol>
+                        </div>
+                        
+                        <div style="background: #f8d7da; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <strong>⚠️ Important:</strong>
+                            <p style="margin: 5px 0; font-size: 13px;">This analysis is approximate. A professional survey is recommended for legal determination. 
+                            Most fences are built 6-12 inches inside the property line to avoid encroachment.</p>
+                        </div>
+                        
+                        <button onclick="focusEasternBoundary()" style="width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                            🔍 Zoom to Eastern Boundary
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="layer-controls" id="layers">
                     <h3>🗂️ City Data Layers</h3>
                     
@@ -596,6 +629,51 @@
             'streets': 'assets/streets_wgs84.geojson'
         };
 
+        // Function to focus on eastern boundary for fence analysis
+        function focusEasternBoundary() {
+            if (!map) {
+                alert('Please wait for the map to load');
+                return;
+            }
+            
+            // Eastern boundary coordinates (rightmost points)
+            const easternPoints = [
+                [38.995444374444531, -94.588818521562615],  // Northeast point
+                [38.995424688310571, -94.588818521562615],  // Southeast corner  
+                [38.995301925003083, -94.588825199202347]   // Continuation south
+            ];
+            
+            // Calculate center of eastern boundary
+            const eastCenter = [
+                (easternPoints[0][0] + easternPoints[1][0]) / 2,
+                easternPoints[0][1]
+            ];
+            
+            // Zoom to eastern boundary at high zoom
+            map.setView(eastCenter, 21);
+            
+            // Highlight eastern boundary
+            if (window.easternHighlight) {
+                map.removeLayer(window.easternHighlight);
+            }
+            
+            window.easternHighlight = L.polyline(easternPoints, {
+                color: '#00ff00',
+                weight: 6,
+                opacity: 0.8,
+                dashArray: '15, 10'
+            }).addTo(map);
+            
+            // Add measurement info
+            const distance = map.distance(easternPoints[0], easternPoints[2]);
+            const distanceFeet = (distance * 3.28084).toFixed(1);
+            
+            L.popup()
+                .setLatLng(eastCenter)
+                .setContent(`<strong>Eastern Boundary</strong><br>Length: ${distanceFeet} feet<br><em>Look for fence position relative to this green line</em>`)
+                .openOn(map);
+        }
+        
         // Initialize Leaflet Map with error handling
         function initLeafletMap() {
             try {
@@ -671,6 +749,49 @@
             });
             
             new zoomIndicator({ position: 'topright' }).addTo(map);
+            
+            // Add measurement functionality
+            let measuring = false;
+            let measurementLine = null;
+            let measurementStart = null;
+            
+            // Right-click to start measuring
+            map.on('contextmenu', function(e) {
+                if (!measuring) {
+                    measuring = true;
+                    measurementStart = e.latlng;
+                    if (measurementLine) {
+                        map.removeLayer(measurementLine);
+                    }
+                    L.marker(measurementStart, {
+                        icon: L.divIcon({
+                            className: 'measurement-marker',
+                            html: '<div style="background: red; width: 10px; height: 10px; border-radius: 50%;"></div>',
+                            iconSize: [10, 10]
+                        })
+                    }).addTo(map);
+                } else {
+                    // Complete measurement
+                    const distance = map.distance(measurementStart, e.latlng);
+                    const distanceFeet = (distance * 3.28084).toFixed(1);
+                    
+                    measurementLine = L.polyline([measurementStart, e.latlng], {
+                        color: 'yellow',
+                        weight: 3,
+                        dashArray: '5, 5'
+                    }).addTo(map);
+                    
+                    L.popup()
+                        .setLatLng(e.latlng)
+                        .setContent(`<strong>Distance: ${distanceFeet} feet</strong><br>(${distance.toFixed(1)} meters)`)
+                        .openOn(map);
+                    
+                    measuring = false;
+                    measurementStart = null;
+                }
+                
+                return false; // Prevent context menu
+            });
 
             // Add property boundary
             addPropertyBoundary();
