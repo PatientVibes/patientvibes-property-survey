@@ -1,44 +1,74 @@
-# Cloudflare Pages Security & Performance Headers
+# Cloudflare Pages Headers Configuration
+# CRITICAL: HTML content-type MUST be set first to prevent text/plain serving
 
-/*
-  # Security Headers
+# Root path - MUST be first
+/
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=600
   X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Index.html - explicit declaration
+/index.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=600
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# All HTML files
+/*.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=600
+
+# JavaScript files
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# CSS files
+/*.css
+  Content-Type: text/css; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# JSON files
+/*.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# GeoJSON files
+/*.geojson
+  Content-Type: application/geo+json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/assets/*.geojson
+  Content-Type: application/geo+json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# KML files
+/*.kml
+  Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# Asset-specific caching
+/assets/*.html
+  Content-Type: text/html; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# Static assets - long cache
+/assets/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.gif
+  Cache-Control: public, max-age=31536000, immutable
+
+# Global security headers (applied to all paths not matched above)
+/*
+  X-Frame-Options: DENY
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net https://maps.googleapis.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https: blob:; connect-src 'self' https:; font-src 'self' data:;
-
-# Explicit content types for proper rendering
-/*.html
-  Content-Type: text/html; charset=utf-8
-
-/*.js
-  Content-Type: application/javascript; charset=utf-8
-
-/*.css
-  Content-Type: text/css; charset=utf-8
-
-/*.json
-  Content-Type: application/json; charset=utf-8
-
-/*.geojson
-  Content-Type: application/geo+json; charset=utf-8
-
-/*.kml
-  Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8
-
-# Cache GeoJSON files for 1 hour (they may update)
-/assets/*.geojson
-  Cache-Control: public, max-age=3600
-
-# Cache reports for 1 day
-/assets/*.html
-  Cache-Control: public, max-age=86400
-
-# Cache static assets for 1 year
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Cache main page for 10 minutes
-/
-  Cache-Control: public, max-age=600
