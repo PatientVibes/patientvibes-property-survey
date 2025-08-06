@@ -570,7 +570,15 @@
 
         // Layer styling configurations
         const layerStyles = {
-            'property-boundary': { color: '#ff4444', weight: 3, fillColor: '#ffff00', fillOpacity: 0.4 },
+            'property-boundary': { 
+                color: '#ff0000',  // Bright red for visibility
+                weight: 4,  // Thicker line for clarity at high zoom
+                fillColor: '#ffff00', 
+                fillOpacity: 0.3,
+                dashArray: '10, 5',  // Dashed line for distinction
+                lineCap: 'round',
+                lineJoin: 'round'
+            },
             'flood-zones': { color: '#0066cc', weight: 2, fillColor: '#0066cc', fillOpacity: 0.3 },
             'zoning': { color: '#8B4513', weight: 2, fillColor: '#8B4513', fillOpacity: 0.2 },
             'council-districts': { color: '#800080', weight: 2, fillColor: '#800080', fillOpacity: 0.1 },
@@ -598,30 +606,71 @@
                 
                 map = L.map('leaflet-map').setView(propertyData.center, 18);
 
-            // Base layers with conservative zoom limits
+            // Base layers with enhanced zoom for property line inspection
             const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles © Esri',
-                maxZoom: 19,  // Reduced from 22 to prevent missing tiles
+                maxZoom: 22,  // Enhanced zoom for detailed inspection
+                maxNativeZoom: 19,  // Max zoom with actual tiles
                 minZoom: 1
             });
 
             const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap',
-                maxZoom: 17,
+                maxZoom: 22,  // Allow zooming beyond native tiles
+                maxNativeZoom: 17,  // Max zoom with actual tiles
                 minZoom: 1
             });
 
-            // Fallback OpenStreetMap layer for high zoom levels
+            // High-resolution OpenStreetMap layer for detailed inspection
             const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
-                maxZoom: 19,
+                maxZoom: 22,  // Enhanced zoom capability
+                maxNativeZoom: 19,  // Max zoom with actual tiles
                 minZoom: 1
             });
 
             satellite.addTo(map);
             
-            // Set map zoom constraints
-            map.setMaxZoom(19);
+            // Set enhanced map zoom constraints for property line inspection
+            map.setMaxZoom(22);
+            
+            // Add zoom controls with custom position
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+            
+            // Add scale control for measurement reference
+            L.control.scale({
+                imperial: true,
+                metric: true,
+                position: 'bottomleft',
+                maxWidth: 200
+            }).addTo(map);
+            
+            // Add custom zoom level indicator
+            const zoomIndicator = L.Control.extend({
+                onAdd: function(map) {
+                    const div = L.DomUtil.create('div', 'leaflet-control-zoom-indicator leaflet-bar');
+                    div.style.background = 'white';
+                    div.style.padding = '5px 10px';
+                    div.style.fontSize = '12px';
+                    div.style.fontWeight = 'bold';
+                    div.innerHTML = 'Zoom: ' + map.getZoom();
+                    
+                    map.on('zoomend', function() {
+                        div.innerHTML = 'Zoom: ' + map.getZoom();
+                        // Add warning for extreme zoom
+                        if (map.getZoom() > 19) {
+                            div.innerHTML += '<br><small style="color: orange;">Enhanced zoom</small>';
+                        }
+                    });
+                    
+                    return div;
+                },
+                onRemove: function(map) {}
+            });
+            
+            new zoomIndicator({ position: 'topright' }).addTo(map);
 
             // Add property boundary
             addPropertyBoundary();
@@ -649,17 +698,17 @@
             
             cityLayers['property-boundary'] = propertyPolygon;
 
-            // Add precision markers
+            // Add precision markers for high-zoom inspection
             propertyData.bounds.forEach((coord, index) => {
                 if (index === propertyData.bounds.length - 1) return;
 
-                // Uncertainty circle (±3 feet)
+                // Uncertainty circle (±3 feet) - more visible at high zoom
                 L.circle(coord, {
-                    radius: 3 * 0.00000274,
-                    color: '#ff4444',
-                    weight: 1,
+                    radius: 0.9144,  // 3 feet in meters for better scaling
+                    color: '#ff0000',
+                    weight: 2,
                     fillColor: '#ff4444',
-                    fillOpacity: 0.2
+                    fillOpacity: 0.3
                 }).addTo(map);
 
                 // Corner markers
