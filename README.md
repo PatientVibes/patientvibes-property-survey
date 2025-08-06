@@ -198,6 +198,77 @@ npx wrangler pages deploy . --project-name=property-survey
 - **Legal Documentation**: Automated contract generation and compliance checking
 - **Municipal Services**: Direct API integration with city planning departments
 
+## 🚀 Deployment Configuration
+
+### **Cloudflare Pages Setup**
+```yaml
+Project Name: property-survey
+Domain: property.patientvibes.io
+Build Command: None (static site with Functions)
+Output Directory: / (root)
+Framework Preset: None
+```
+
+### **Environment Variables**
+```bash
+# Required for Cloudflare deployment
+SITE_NAME="PatientVibes Property Survey"
+VERSION="2.0.0"
+ENABLE_ANALYTICS="true"
+
+# Optional API configurations
+GOOGLE_MAPS_API_KEY="your-api-key-here"
+```
+
+### **R2 Storage Configuration**
+```toml
+# wrangler.toml configuration
+[[r2_buckets]]
+binding = "PROPERTY_ASSETS"
+bucket_name = "property-survey-assets"
+```
+
+### **Asset Management**
+- **GeoJSON Files**: 4.5MB total in `/assets/` directory
+- **R2 Bucket**: `property-survey-assets` for CDN distribution
+- **CORS Policy**: Configured for browser access
+- **Caching**: 1-year cache headers for static assets
+
+### **Deployment Process**
+1. **GitHub Push**: Commit changes to main branch
+2. **Automatic Build**: Cloudflare Pages triggers deployment
+3. **Function Compilation**: Middleware and analytics functions deploy
+4. **Asset Upload**: GeoJSON files sync to R2 storage
+5. **DNS Update**: Custom domain routes to new deployment
+6. **SSL/TLS**: Automatic HTTPS certificate provisioning
+
+### **Local Development**
+```bash
+# Clone repository
+git clone https://github.com/PatientVibes/patientvibes-property-survey.git
+cd patientvibes-property-survey
+
+# Install test dependencies
+npm install
+
+# Run tests
+npm test
+
+# Serve locally
+python3 -m http.server 8000
+# Navigate to http://localhost:8000
+```
+
+### **Testing & Validation**
+```bash
+# Run Playwright tests
+npm test
+
+# Test specific features
+npm test -- --grep "Property Data"
+npm test -- --grep "Map Functionality"
+```
+
 ## 📞 Professional Contact
 
 **PatientVibes.io** - Advanced AI Agent Development & Property Analysis  
